@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ERP Dashboard</title>
+</head>
+
+<body>
+
+    <h1>ERP Admin Dashboard</h1>
+
+    <a href="/add">Add Employee</a>
+
+    &nbsp;&nbsp;
+
+    <a href="/logout">Logout</a>
+
+    <br><br>
+
+    <table border="1" cellpadding="10">
+
+        <tr>
+
+            <th>Emp ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Salary</th>
+            <th>HRA</th>
+            <th>DA</th>
+            <th>Total Salary</th>
+            <th>Action</th>
+
+        </tr>
+
+        <% employees.forEach(employee => { %>
+
+            <tr>
+
+                <td>
+                    <%= employee.empid %>
+                </td>
+
+                <td>
+                    <%= employee.name %>
+                </td>
+
+                <td>
+                    <%= employee.email %>
+                </td>
+
+                <td>
+                    <%= employee.salary %>
+                </td>
+
+                <td>
+                    <%= employee.hra %>
+                </td>
+
+                <td>
+                    <%= employee.da %>
+                </td>
+
+                <td>
+                    <%= employee.totalSalary %>
+                </td>
+
+                <td>
+
+                    <a href="/edit/<%= employee._id %>">
+                        Edit
+                    </a>
+
+                    |
+
+                    <a href="/delete/<%= employee._id %>">
+                        Delete
+                    </a>
+
+                </td>
+
+            </tr>
+
+        <% }) %>
+
+    </table>
+
+</body>
+
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>User Registration</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            margin: 30px;
+        }
+
+        form {
+            width: 500px;
+            padding: 20px;
+            border: 1px solid gray;
+        }
+
+        input {
+            margin: 8px 0;
+        }
+
+        .error {
+            color: red;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            margin-top: 30px;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eeeeee;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>User Registration Form</h1>
+
+
+    <!-- ERROR MESSAGES -->
+
+    <% if (errors.length > 0) { %>
+
+        <h3 class="error">Please correct these errors:</h3>
+
+        <ul class="error">
+
+            <% errors.forEach(function(error) { %>
+
+                <li>
+                    <%= error.msg %>
+                </li>
+
+            <% }) %>
+
+        </ul>
+
+    <% } %>
+
+
+    <!-- REGISTRATION FORM -->
+
+    <form
+        action="/register"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        <!-- USERNAME -->
+
+        <label>Username:</label>
+
+        <input
+            type="text"
+            name="username"
+            value="<%= oldData.username || '' %>"
+        >
+
+        <br><br>
+
+
+        <!-- PASSWORD -->
+
+        <label>Password:</label>
+
+        <input
+            type="password"
+            name="password"
+        >
+
+        <br><br>
+
+
+        <!-- CONFIRM PASSWORD -->
+
+        <label>Confirm Password:</label>
+
+        <input
+            type="password"
+            name="confirmPassword"
+        >
+
+        <br><br>
+
+
+        <!-- EMAIL -->
+
+        <label>Email:</label>
+
+        <input
+            type="text"
+            name="email"
+            value="<%= oldData.email || '' %>"
+        >
+
+        <br><br>
+
+
+        <!-- GENDER -->
+
+        <label>Gender:</label>
+
+        <input
+            type="radio"
+            name="gender"
+            value="Male"
+            <%= oldData.gender === "Male" ? "checked" : "" %>
+        >
+
+        Male
+
+        <input
+            type="radio"
+            name="gender"
+            value="Female"
+            <%= oldData.gender === "Female" ? "checked" : "" %>
+        >
+
+        Female
+
+        <br><br>
+
+
+        <!-- HOBBIES -->
+
+        <label>Hobbies:</label>
+
+        <br>
+
+        <input
+            type="checkbox"
+            name="hobbies"
+            value="Reading"
+            <%= oldData.hobbies && oldData.hobbies.includes("Reading") ? "checked" : "" %>
+        >
+
+        Reading
+
+        <br>
+
+        <input
+            type="checkbox"
+            name="hobbies"
+            value="Music"
+            <%= oldData.hobbies && oldData.hobbies.includes("Music") ? "checked" : "" %>
+        >
+
+        Music
+
+        <br>
+
+        <input
+            type="checkbox"
+            name="hobbies"
+            value="Sports"
+            <%= oldData.hobbies && oldData.hobbies.includes("Sports") ? "checked" : "" %>
+        >
+
+        Sports
+
+        <br>
+
+        <input
+            type="checkbox"
+            name="hobbies"
+            value="Travel"
+            <%= oldData.hobbies && oldData.hobbies.includes("Travel") ? "checked" : "" %>
+        >
+
+        Travel
+
+        <br><br>
+
+
+        <!-- PROFILE PICTURE -->
+
+        <label>Profile Picture:</label>
+
+        <input
+            type="file"
+            name="profilePic"
+            accept=".jpg,.jpeg,.png"
+        >
+
+        <br><br>
+
+
+        <!-- OTHER PICTURES -->
+
+        <label>Other Pictures:</label>
+
+        <input
+            type="file"
+            name="otherPics"
+            accept=".jpg,.jpeg,.png"
+            multiple
+        >
+
+        <br><br>
+
+
+        <button type="submit">
+            Register
+        </button>
+
+    </form>
+
+
+    <!-- SUCCESS RESULT -->
+
+    <% if (result) { %>
+
+        <h2>Registration Successful</h2>
+
+        <table>
+
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+
+
+            <tr>
+                <td>Username</td>
+                <td><%= result.username %></td>
+            </tr>
+
+
+            <tr>
+                <td>Password</td>
+                <td><%= result.password %></td>
+            </tr>
+
+
+            <tr>
+                <td>Email</td>
+                <td><%= result.email %></td>
+            </tr>
+
+
+            <tr>
+                <td>Gender</td>
+                <td><%= result.gender %></td>
+            </tr>
+
+
+            <tr>
+                <td>Hobbies</td>
+
+                <td>
+                    <%= result.hobbies.join(", ") %>
+                </td>
+
+            </tr>
+
+
+            <!-- PROFILE PICTURE -->
+
+            <tr>
+
+                <td>Profile Picture</td>
+
+                <td>
+
+                    <% if (result.profilePic) { %>
+
+                        <img
+                            src="/upload/profile/<%= result.profilePic.filename %>"
+                        >
+
+                        <br>
+
+                        <a
+                            href="/download/profile/<%= result.profilePic.filename %>"
+                        >
+                            Download Profile Picture
+                        </a>
+
+                    <% } else { %>
+
+                        No profile picture
+
+                    <% } %>
+
+                </td>
+
+            </tr>
+
+
+            <!-- OTHER PICTURES -->
+
+            <tr>
+
+                <td>Other Pictures</td>
+
+                <td>
+
+                    <% if (result.otherPics.length > 0) { %>
+
+                        <% result.otherPics.forEach(function(file) { %>
+
+                            <img
+                                src="/upload/other/<%= file.filename %>"
+                            >
+
+                            <br>
+
+                            <a
+                                href="/download/other/<%= file.filename %>"
+                            >
+                                Download Picture
+                            </a>
+
+                            <br><br>
+
+                        <% }) %>
+
+                    <% } else { %>
+
+                        No other pictures
+
+                    <% } %>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    <% } %>
+
+
+</body>
+
+</html>
